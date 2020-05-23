@@ -1,6 +1,7 @@
 // Dependencies
 const express = require("express");
 const path = require("path");
+const bcrypt = require("bcrypt");
 
 // Set the port of our application
 // process.env.PORT lets the port be set by Heroku
@@ -37,6 +38,10 @@ let tasks = [
     taskDeadline: "Tomorrow at 11:59pm",
   },
 ];
+
+// Setting users locally for testing purposes
+let users = [];
+
 // Routes
 // Basic route that sends the user first to the AJAX Page
 app.get("/", function (req, res) {
@@ -59,6 +64,11 @@ app.get("/api/tasks/:slug", function (req, res) {
   }
 
   return res.json(false);
+});
+
+//For user testing
+app.get("/users", (req, res) => {
+  res.json(users);
 });
 //To add a new task - takes in JSON input
 app.post("/api/tasks", function (req, res) {
@@ -110,6 +120,33 @@ app.delete("/api/tasks/:slug", function (req, res) {
   });
   console.log(tasks);
   res.json({ message: "Task has been deleted" });
+});
+
+//Adding Users
+
+app.post("/users", async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const user = { name: req.body.name, password: req.body.password };
+    users.push(user);
+    res.status(201).send();
+  } catch {
+    res.status(500).send();
+  }
+});
+
+//Verifying Login
+
+app.post("/users/login", async (req, res) => {
+  const user = users.find((user) => user.name === req.body.name);
+  if (user === null) {
+    return res.status(400).send("User not found");
+  }
+  try {
+    bcrypt.compare(req.body.password, user.password);
+  } catch {
+    res.status(500).send();
+  }
 });
 
 // Start our server so that it can begin listening to client requests.
