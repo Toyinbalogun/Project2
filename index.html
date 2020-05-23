@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hello Bulma!</title>
+    <title>Task.it</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css"
@@ -12,7 +12,7 @@
       defer
       src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
     ></script>
-    <!-- <link rel="stylesheet" href="styles/debug.css" /> -->
+    <link rel="stylesheet" href="assets/styles/debug.css" />
   </head>
   <body>
     <nav
@@ -21,30 +21,37 @@
       aria-label="main navigation"
     >
       <div class="navbar-brand">
-        <a class="navbar-item" href="https://bulma.io">
+        <a class="navbar-item" href="#">
           <img
-            src="https://bulma.io/images/bulma-logo.png"
-            alt="Bulma: Free, open source, and modern CSS framework based on Flexbox"
+            src="assets/images/taskitlogo.png"
+            alt="Task.it - Task management made easy"
             width="112"
             height="28"
           />
         </a>
-        <div class="field is-grouped">
-          <p class="navbar-item control">
-            <button class="button is-primary">
-              Add Task
-            </button>
-          </p>
-          <p class="navbar-item control">
-            <button class="button is-success">
-              Edit Task
-            </button>
-          </p>
-          <p class="navbar-item control">
-            <button class="button is-danger">
-              Delete Task
-            </button>
-          </p>
+        <div class="navbar-menu">
+          <div class="navbar-start is-grouped">
+            <p class="navbar-item control">
+              <button class="button is-success">
+                Add Task
+              </button>
+            </p>
+            <p class="navbar-item control">
+              <button class="button is-primary">
+                View Tasks
+              </button>
+            </p>
+            <p class="navbar-item control">
+              <button class="button is-primary">
+                Edit Task
+              </button>
+            </p>
+            <p class="navbar-item control">
+              <button class="button is-danger">
+                Delete Task
+              </button>
+            </p>
+          </div>
         </div>
       </div>
     </nav>
@@ -53,35 +60,18 @@
         <h1 class="title">
           Task.it
         </h1>
-        <p class="subtitle">Task management, made simple.</p>
+        <p class="subtitle">Task management, made easy.</p>
       </div>
     </section>
     <div class="container">
-      <div class="field">
-        <label class="label">Name of Task</label>
-        <div class="control">
-          <input
-            class="input"
-            type="text"
-            placeholder="What kind of task is this?"
-          />
+      <div class="columns">
+        <div class="column" id="sidebar">
+          <div class="box"></div>
         </div>
-        <label class="label">Task Description</label>
-        <div class="control">
-          <input
-            class="input"
-            type="text"
-            placeholder="What are the details of the task?"
-          />
+        <div class="column" id="content">
+          <div class="box"></div>
+        </div>
       </div>
-      <label class="label">Deadline</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          placeholder="When do you expect to complete the task?"
-        />
-    </div>
     </div>
   </body>
 </html>
