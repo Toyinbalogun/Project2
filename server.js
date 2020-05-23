@@ -2,6 +2,7 @@
 const express = require("express");
 const path = require("path");
 const bcrypt = require("bcrypt");
+const exphbs = require("express-handlebars");
 
 // Set the port of our application
 // process.env.PORT lets the port be set by Heroku
@@ -13,6 +14,10 @@ const app = express();
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Set Handlebars as default templating engine
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 //SOME DATA FOR TASK.IT
 //not sure if the task deadline is a string or a date
@@ -39,13 +44,13 @@ let tasks = [
   },
 ];
 
-// Setting users locally for testing purposes
-let users = [];
+// Setting users locally for testing purposes -- We do need to eventually use database for this section
+let users = [{ name: "Kyle", id: "1" }];
 
 // Routes
 // Basic route that sends the user first to the AJAX Page
 app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.render("app");
 });
 // Displays all tasks
 app.get("/api/tasks", function (req, res) {
@@ -70,6 +75,11 @@ app.get("/api/tasks/:slug", function (req, res) {
 app.get("/users", (req, res) => {
   res.json(users);
 });
+
+app.get("/login", (req, res) => {
+  res.render("login", users[0]);
+});
+
 //To add a new task - takes in JSON input
 app.post("/api/tasks", function (req, res) {
   // req.body hosts is equal to the JSON post sent from the user
