@@ -45,7 +45,7 @@ let tasks = [
 ];
 
 // Setting users locally for testing purposes -- We do need to eventually use database for this section
-let users = [{ name: "Kyle", id: "1" }];
+let users = [];
 
 // Routes
 // Basic route that sends the user first to the AJAX Page
@@ -72,8 +72,8 @@ app.get("/api/tasks/:slug", function (req, res) {
 });
 
 //For user testing
-app.get("/users", (req, res) => {
-  res.json(users);
+app.get("/signup", (req, res) => {
+  res.render("signup", users);
 });
 
 app.get("/login", (req, res) => {
