@@ -23,6 +23,7 @@ app.set("view engine", "handlebars");
 //not sure if the task deadline is a string or a date
 let tasks = [
   {
+
     routeName: "dancing-practice",
     taskName: "Dancing Practice",
     taskDescription: "Go for dance practice at 5pm",
@@ -43,7 +44,11 @@ let tasks = [
     taskDeadline: "Tomorrow at 11:59pm",
   },
 ];
+//loop through array and for each element assign an id
 
+for (let i = 0; i < tasks.length; i++){
+  tasks[i].id = generateID();
+}
 //Function that generates random id for user
 function generateID(){
   let char = "1234567890qwertyuiopasdfghjklzxcvbnm"
@@ -92,12 +97,13 @@ app.get("/login", (req, res) => {
 app.post("/api/tasks", function (req, res) {
   // req.body hosts is equal to the JSON post sent from the user
   const newTask = req.body;
-  const slug = generateID()
+  const id = generateID()
+  newTask.id = id;
 
   
   // Using a RegEx Pattern to remove spaces from newTask.taskName
   newTask.routeName = newTask.taskName.replace(/\s+/g, "-").toLowerCase();
-  newTask.id = slug
+  
 
   console.log(newTask);
 
