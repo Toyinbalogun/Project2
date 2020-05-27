@@ -44,9 +44,21 @@ let tasks = [
     taskDeadline: "Tomorrow at 11:59pm",
   },
 ];
+//loop through array and for each element assign an id
 
-// Setting users locally for testing purposes -- We do need to eventually use database for this section
-let users = [{ name: "Kyle", id: "1" }];
+for (let i = 0; i < tasks.length; i++){
+  tasks[i].id = generateID();
+}
+//Function that generates random id for user
+function generateID(){
+  let char = "1234567890qwertyuiopasdfghjklzxcvbnm"
+  let id = ""
+  for (let i = 0; i < 8; i++) {
+    let index = Math.floor(Math.random() * char.length)
+    id += char[index]
+  }
+  return id
+}
 
 // Routes
 // Basic route that sends the user first to the AJAX Page
@@ -73,8 +85,8 @@ app.get("/api/tasks/:slug", function (req, res) {
 });
 
 //For user testing
-app.get("/users", (req, res) => {
-  res.json(users);
+app.get("/signup", (req, res) => {
+  res.render("signup", users);
 });
 
 app.get("/login", (req, res) => {
@@ -85,10 +97,14 @@ app.get("/login", (req, res) => {
 app.post("/api/tasks", function (req, res) {
   // req.body hosts is equal to the JSON post sent from the user
   const newTask = req.body;
+  const id = generateID()
+  newTask.id = id;
 
+  
   // Using a RegEx Pattern to remove spaces from newTask.taskName
   newTask.routeName = newTask.taskName.replace(/\s+/g, "-").toLowerCase();
   
+
   console.log(newTask);
 
   tasks.push(newTask);
