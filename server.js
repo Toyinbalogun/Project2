@@ -23,6 +23,7 @@ app.set("view engine", "handlebars");
 //not sure if the task deadline is a string or a date
 let tasks = [
   {
+
     routeName: "dancing-practice",
     taskName: "Dancing Practice",
     taskDescription: "Go for dance practice at 5pm",
@@ -87,7 +88,7 @@ app.post("/api/tasks", function (req, res) {
 
   // Using a RegEx Pattern to remove spaces from newTask.taskName
   newTask.routeName = newTask.taskName.replace(/\s+/g, "-").toLowerCase();
-
+  
   console.log(newTask);
 
   tasks.push(newTask);
