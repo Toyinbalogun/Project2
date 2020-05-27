@@ -4,15 +4,11 @@
   "description": "Simplified taskmanager",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server"
-  },
-  "author": "Robert McKenney <robert@mckenney.ca>",
-  "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
     "express-handlebars": "^4.0.4",
-    "mysql2": "^2.1.0"
+    "mysql2": "^2.1.0",
+     "bcrypt": "^4.0.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
