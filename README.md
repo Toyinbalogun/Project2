@@ -1,6 +1,6 @@
 # Project2
 
-Task Manager that manages list of tasks using ...
+Task Manager that manages list of tasks for user using...
 
 # Team Members
 - Lois Aleghe
