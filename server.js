@@ -18,8 +18,7 @@ app.use(express.json());
 // Set Handlebars as default templating engine
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
-app.use(require('./controller/tasks'))
-
+app.use(require("./controller/tasks"));
 
 // Start our server so that it can begin listening to client requests.
 app.listen(PORT, function () {

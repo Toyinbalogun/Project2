@@ -10,17 +10,12 @@
             </button>
         </p>
         <p class="navbar-item ">
-            <button class="button is-primary">
-                View Tasks
-            </button>
-        </p>
-        <p class="navbar-item ">
-            <button class="button is-primary">
+            <button id="btn-edit" class="button is-primary">
                 Edit Task
             </button>
         </p>
         <p class="navbar-item control">
-            <button class="button is-danger">
+            <button id="btn-delete" class="button is-danger">
                 Delete Task
             </button>
         </p>
@@ -43,9 +38,9 @@
         <div class="column" id="sidebar">
             {{#each tasks}}
             <div class="box">
-                <p>task name: {{this.taskName}} </p>
-                <p>task description: {{this.taskDescription}}</p>
-                <p>task deadline: {{this.taskDeadline}}</p>
+                <p>Task Name: {{this.taskName}} </p>
+                <p>Task Description: {{this.taskDescription}}</p>
+                <p>Task Deadline: {{this.taskDeadline}}</p>
             </div>
             {{/each}}
         </div>
@@ -97,6 +92,35 @@
     <button class="modal-close is-large" aria-label="close"></button>
 </div>
 
+<!-- Delete Modal -->
+
+<div class="modal" id="delete-task-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h1>Delete a Task</h1>
+            <hr>
+
+            {{!-- Form for adding a task --}}
+            <form action="" id="delete-task-form">
+                {{#each tasks}}
+                <div class="box">
+                    <p>Task Name: {{this.taskName}} </p>
+                    <p>Task Description: {{this.taskDescription}}</p>
+                    <p>Task Deadline: {{this.taskDeadline}}</p>
+                </div>
+                <button class="button is-danger" type="submit">Delete</button>
+                {{/each}}
+
+                <div class="control">
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+</div>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
@@ -106,12 +130,50 @@
             document.getElementById("add-task-modal").classList.add("is-active")
         })
 
-       document.querySelectorAll('.modal-close').forEach(element => {
+        document.querySelectorAll('.modal-close').forEach(element => {
             element.addEventListener("click", event => {
                 document.getElementById("add-task-modal").classList.remove("is-active")
                 document.documentElement.classList.remove("is-clipped")
             })
 
+        })
+
+        // Delete
+
+        document.getElementById("btn-delete").addEventListener("click", event => {
+            document.documentElement.classList.add("is-clipped")
+            document.getElementById("delete-task-modal").classList.add("is-active")
+        })
+
+        document.querySelectorAll('.modal-close').forEach(element => {
+            element.addEventListener("click", event => {
+                document.getElementById("delete-task-modal").classList.remove("is-active")
+                document.documentElement.classList.remove("is-clipped")
+            })
+
+        })
+
+
+
+
+        // Delete Tasks Handler
+        document.getElementById("delete-task-form").addEventListener("submit", event => {
+            event.preventDefault();
+
+            const deleteTask = {
+                taskName: document.querySelector("[name=taskName]").value.trim(),
+                taskDescription: document.querySelector("[name=taskDescription]").value.trim(),
+                taskDeadline: document.querySelector("[name=taskDeadline]").value.trim(),
+            }
+            fetch(`/api/tasks`, {
+                method: 'DELETE',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newTask)
+            }).then(response => {
+                console.log(response)
+                location.reload()
+            })
+            location.reload()
         })
 
         // Event handler for submitting the add task form
@@ -130,8 +192,10 @@
                 body: JSON.stringify(newTask)
             }).then(response => {
                 console.log(response)
+                location.reload()
             })
         })
+
 
     })
 </script>
