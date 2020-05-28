@@ -31,7 +31,7 @@ class Task {
   async delete() {
     if (this.id) {
       let sql = "DELETE FROM tasks SET ? WHERE id = ?;";
-      connection.query(sql, function (err, result) {
+      const [result] = await connection.query(sql, function (err, result) {
         if (err) throw err;
         console.log("Number of records deleted: " + result.affectedRows);
       });

@@ -92,22 +92,29 @@
     <button class="modal-close is-large" aria-label="close"></button>
 </div>
 
-<!---->
+<!-- Delete Modal -->
 
 <div class="modal" id="delete-task-modal">
     <div class="modal-background"></div>
     <div class="modal-content">
         <div class="box">
-            {{#each tasks}}
-            <div class="box">
-                <p>Task Name: {{this.taskName}} </p>
-                <p>Task Description: {{this.taskDescription}}</p>
-                <p>Task Deadline: {{this.taskDeadline}}</p>
-                <div class="control">
-                    <button class="button is-danger" type="delete">Delete</button>
+            <h1>Delete a Task</h1>
+            <hr>
+
+            {{!-- Form for adding a task --}}
+            <form action="" id="delete-task-form">
+                {{#each tasks}}
+                <div class="box">
+                    <p>Task Name: {{this.taskName}} </p>
+                    <p>Task Description: {{this.taskDescription}}</p>
+                    <p>Task Deadline: {{this.taskDeadline}}</p>
                 </div>
-            </div>
-            {{/each}}
+                <button class="button is-danger" type="submit">Delete</button>
+                {{/each}}
+
+                <div class="control">
+                </div>
+            </form>
         </div>
     </div>
     <button class="modal-close is-large" aria-label="close"></button>
@@ -146,8 +153,28 @@
 
         })
 
-        // Edit Tasks
 
+
+
+        // Delete Tasks Handler
+        document.getElementById("delete-task-form").addEventListener("submit", event => {
+            event.preventDefault();
+
+            const deleteTask = {
+                taskName: document.querySelector("[name=taskName]").value.trim(),
+                taskDescription: document.querySelector("[name=taskDescription]").value.trim(),
+                taskDeadline: document.querySelector("[name=taskDeadline]").value.trim(),
+            }
+            fetch(`/api/tasks`, {
+                method: 'DELETE',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newTask)
+            }).then(response => {
+                console.log(response)
+                location.reload()
+            })
+            location.reload()
+        })
 
         // Event handler for submitting the add task form
         document.getElementById("add-task-form").addEventListener("submit", event => {
@@ -169,25 +196,6 @@
             })
         })
 
-        // Event handler for Delete
-
-        document.getElementById("delete-task-form").addEventListener("delete", event => {
-            event.preventDefault();
-
-            const newTask = {
-                taskName: document.querySelector("[name=taskName]").value.trim(),
-                taskDescription: document.querySelector("[name=taskDescription]").value.trim(),
-                taskDeadline: document.querySelector("[name=taskDeadline]").value.trim(),
-            }
-
-            fetch(`/api/tasks`, {
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newTask)
-            }).then(response => {
-                console.log(response)
-            })
-        })
 
     })
 </script>
