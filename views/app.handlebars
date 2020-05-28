@@ -5,7 +5,7 @@
                 height="28" />
         </a>
         <p class="navbar-item ">
-            <button class="button is-primary">
+            <button id="btn-add" class="button is-primary">
                 Add Task
             </button>
         </p>
@@ -41,10 +41,97 @@
 <div class="container">
     <div class="columns">
         <div class="column" id="sidebar">
-            <div class="box"></div>
+            {{#each tasks}}
+            <div class="box">
+                <p>task name: {{this.taskName}} </p>
+                <p>task description: {{this.taskDescription}}</p>
+                <p>task deadline: {{this.taskDeadline}}</p>
+            </div>
+            {{/each}}
         </div>
-        <div class="column" id="content">
+        {{!-- <div class="column" id="content">
             <div class="box"></div>
-        </div>
+        </div> --}}
     </div>
 </div>
+{{!-- modal window for the form used to add task --}}
+<div class="modal" id="add-task-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h1>Add a Task</h1>
+            <hr>
+
+            {{!-- Form for adding a task --}}
+            <form action="" id="add-task-form">
+                <div class="field">
+                    <label class="label" for="taskName">Task Name</label>
+                    <div class="control">
+                        <input name="taskName" id="taskName" class="input" type="text"
+                            placeholder="Enter a name for this task">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="taskDescription">Task Description</label>
+                    <div class="control">
+                        <textarea id="taskDescription" name="taskDescription" class="textarea"
+                            placeholder="Enter what the task is about"></textarea>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="taskDeadline">Task Deadline</label>
+                    <div class="control">
+                        <input name="taskDeadline" id="taskDeadline" class="input" type="text"
+                            placeholder="When should this task expire">
+                    </div>
+                </div>
+
+                <div class="control">
+                    <button class="button is-primary" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // Event handler to open add task modal window
+        document.getElementById("btn-add").addEventListener("click", event => {
+            document.documentElement.classList.add("is-clipped")
+            document.getElementById("add-task-modal").classList.add("is-active")
+        })
+
+       document.querySelectorAll('.modal-close').forEach(element => {
+            element.addEventListener("click", event => {
+                document.getElementById("add-task-modal").classList.remove("is-active")
+                document.documentElement.classList.remove("is-clipped")
+            })
+
+        })
+
+        // Event handler for submitting the add task form
+        document.getElementById("add-task-form").addEventListener("submit", event => {
+            event.preventDefault();
+
+            const newTask = {
+                taskName: document.querySelector("[name=taskName]").value.trim(),
+                taskDescription: document.querySelector("[name=taskDescription]").value.trim(),
+                taskDeadline: document.querySelector("[name=taskDeadline]").value.trim(),
+            }
+
+            fetch(`/api/tasks`, {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newTask)
+            }).then(response => {
+                console.log(response)
+            })
+        })
+
+    })
+</script>
