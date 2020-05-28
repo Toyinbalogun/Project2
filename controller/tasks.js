@@ -9,7 +9,7 @@ route.get('/', async function (req, res) {
   res.render('app', { tasks: data })
 })
 
-//don't need this anymore since the data is in sql
+
 // /* API ROUTES */
 // //SOME DATA FOR TASK.IT
 // //not sure if the task deadline is a string or a date
@@ -63,7 +63,7 @@ route.get("/api/tasks", function (req, res) {
 });
 
 // Displays a single task, or returns false
-route.get("/api/tasks/:slug", function (req, res) {
+route.get("/api/tasks/slug/:slug", function (req, res) {
   const slug = req.params.slug;
   console.log(slug);
 
@@ -74,6 +74,16 @@ route.get("/api/tasks/:slug", function (req, res) {
   }
 
   return res.json(false);
+});
+
+// Displays a single task, but get by id
+route.get("/api/tasks/:id", async (req, res) => {
+  const taskId = req.params.id;
+  const task = await Task.findById(taskId)
+  if(!task){
+   return res.status(404).json({ message: "task not found"})
+  }
+  return res.json(task);
 });
 
 //For user testing
@@ -103,30 +113,27 @@ route.post("/api/tasks", function (req, res) {
 });
 
 //to edit/update a task
-route.put("/api/tasks/:slug", function (req, res) {
-  const slug = req.params.slug;
-  let updatedTask = {
-    taskName: req.body.taskName,
-    taskDescription: req.body.taskDescription,
-    taskDeadline: req.body.taskDeadline,
-  };
-  for (let task of tasks) {
-    if (task.routeName === slug) {
-      //looping through the attributes of an object one by one
-      for (let attribute in task) {
-        //the if statement is checking if the attribute of req.body exists
-        if (req.body.hasOwnProperty(attribute)) {
-          task[attribute] = req.body[attribute];
-        }
-      }
+route.put("/api/tasks/:id", async function (req, res) {
+  const task = await Task.findById(req.params.id)
+  if (!task) return res.status(404).json({
 
-      console.log(task);
-      break;
-    }
+    message: "task not found"
+  })
+
+  task.taskName = req.body.taskName
+  task.taskDescription = req.body.taskDescription
+  task.taskDeadline = req.body.taskDeadline
+
+  try {
+    await task.save()
+    return res.status(200).json(task)
+  } catch (err) {
+    res.status(500).json(err)
   }
-  console.log(tasks);
-  res.json({ message: "Task has been updated" });
-});
+    }
+  
+  
+);
 
 //To delete a task
 route.delete("/api/tasks/:slug", function (req, res) {
