@@ -1,27 +1,42 @@
+// ****************************************************************************
+// Server.js
+// This file is the initial starting point for the Node/Express server.
+// ****************************************************************************
+
 // Dependencies
-const express = require("express");
-const path = require("path");
-const bcrypt = require("bcrypt");
-const exphbs = require("express-handlebars");
+// =============================================================
+const express = require('express')
+const exphbs = require('express-handlebars')
 
-// Set the port of our application
-// process.env.PORT lets the port be set by Heroku
-const PORT = process.env.PORT || 4000;
+// Requiring our models for syncing to the MySQL database
+// Remember: This syntax imports the `db` object exported from the
+// `./models/index.js` module.
+const db = require('./models')
 
-// Create express app instance.
-const app = express();
+// Sets up the Express App
+// =============================================================
+const app = express()
+
+// Set up the Express app to use the Handlebars template engine
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
+app.set('view engine', 'handlebars')
 
 // Sets up the Express app to handle data parsing
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
-// Set Handlebars as default templating engine
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
-app.use(require("./controller/tasks"));
+// Allow Express to automatically serve static resource like the
+// HTML, CSS and JavaScript for the frontend client application.
+app.use(express.static('./public'))
 
-// Start our server so that it can begin listening to client requests.
-app.listen(PORT, function () {
-  // Log (server-side) when our server has started
-  console.log("Server listening on: http://localhost:" + PORT);
-});
+// Routes
+// =============================================================
+app.get('/', (req, res) => {
+  res.render('index', { appName: 'Project 2' })
+})
+
+// Syncing our sequelize models and then starting our express app
+db.sequelize.sync({ force: true }).then(() => {
+  const PORT = process.env.PORT || 3000
+  app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`))
+})

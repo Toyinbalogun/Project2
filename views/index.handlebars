@@ -100,7 +100,7 @@
 
             {{!-- Form for editing a task --}}
             <form action="" id="edit-task-form">
-                <input type="hidden" name="editTaskId" id="editTaskId" >
+                <input type="hidden" name="editTaskId" id="editTaskId">
                 <div class="field">
                     <label class="label" for="edittaskName">Task Name</label>
                     <div class="control">
@@ -132,7 +132,7 @@
         </div>
     </div>
     <button class="modal-close is-large" aria-label="close"></button>
-</div> 
+</div>
 <!-- Delete Modal -->
 
 <div class="modal" id="delete-task-modal">
@@ -150,7 +150,7 @@
                     <p>Task Description: {{this.taskDescription}}</p>
                     <p>Task Deadline: {{this.taskDeadline}}</p>
                 </div>
-                <button class="button is-danger" type="submit">Delete</button>
+                <button class="button is-danger delete" data-taskId="{{this.id}}" type="submit">Delete</button>
                 {{/each}}
 
                 <div class="control">
@@ -160,7 +160,6 @@
     </div>
     <button class="modal-close is-large" aria-label="close"></button>
 </div>
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -203,13 +202,8 @@
         // Delete Tasks Handler
         document.getElementById("delete-task-form").addEventListener("submit", event => {
             event.preventDefault();
-
-            const deleteTask = {
-                taskName: document.querySelector("[name=taskName]").value.trim(),
-                taskDescription: document.querySelector("[name=taskDescription]").value.trim(),
-                taskDeadline: document.querySelector("[name=taskDeadline]").value.trim(),
-            }
-            fetch(`/api/tasks`, {
+            console.log(event)
+            fetch(`/api/tasks/`, {
                 method: 'DELETE',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(deleteTask)
@@ -217,7 +211,6 @@
                 console.log(response)
                 location.reload()
             })
-            location.reload()
         })
 
         // Event handler for submitting the add task form
@@ -281,7 +274,7 @@
 
             console.log(document.getElementById("editTaskId").value)
 
-           fetch(`/api/tasks/${document.getElementById("editTaskId").value}`, {
+            fetch(`/api/tasks/${document.getElementById("editTaskId").value}`, {
                 method: 'PUT',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newTask)

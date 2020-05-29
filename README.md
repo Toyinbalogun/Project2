@@ -1,8 +1,9 @@
-# Project2
+[![Build Status](https://travis-ci.com/rlmckenney/FSF-CU-Project2.svg?branch=master)](https://travis-ci.com/rlmckenney/FSF-CU-Project2)
 
-Task Manager that manages list of tasks for user using...
+**Carleton University &ndash; Coding Bootcamp**
 
-# Team Members
-- Lois Aleghe
-- Ryan Schock
-- Oluwatoyin(Ty) Balogun
+Robert McKenney | _Instructor_
+
+# Project 2 &ndash; Demo
+
+Intro goes here ...

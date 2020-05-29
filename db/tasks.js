@@ -1,14 +1,13 @@
-const Task = require('../models/task')
-const express = require('express')
+const Task = require("../models/task");
+const express = require("express");
 
-const route = express.Router()
+const route = express.Router();
 
 /* HTML Routes */
-route.get('/', async function (req, res) {
-  const data = await Task.findAll()
-  res.render('app', { tasks: data })
-})
-
+route.get("/", async function (req, res) {
+  const data = await Task.findAll();
+  res.render("app", { tasks: data });
+});
 
 // /* API ROUTES */
 // //SOME DATA FOR TASK.IT
@@ -42,14 +41,14 @@ route.get('/', async function (req, res) {
 //   tasks[i].id = generateID();
 // }
 //Function that generates random id for user
-function generateID(){
-  let char = "1234567890qwertyuiopasdfghjklzxcvbnm"
-  let id = ""
+function generateID() {
+  let char = "1234567890qwertyuiopasdfghjklzxcvbnm";
+  let id = "";
   for (let i = 0; i < 8; i++) {
-    let index = Math.floor(Math.random() * char.length)
-    id += char[index]
+    let index = Math.floor(Math.random() * char.length);
+    id += char[index];
   }
-  return id
+  return id;
 }
 
 // Routes
@@ -79,9 +78,9 @@ route.get("/api/tasks/slug/:slug", function (req, res) {
 // Displays a single task, but get by id
 route.get("/api/tasks/:id", async (req, res) => {
   const taskId = req.params.id;
-  const task = await Task.findById(taskId)
-  if(!task){
-   return res.status(404).json({ message: "task not found"})
+  const task = await Task.findById(taskId);
+  if (!task) {
+    return res.status(404).json({ message: "task not found" });
   }
   return res.json(task);
 });
@@ -103,10 +102,10 @@ route.post("/api/tasks", function (req, res) {
     taskName: req.body.taskName,
     taskDescription: req.body.taskDescription,
     taskDeadline: req.body.taskDeadline,
-    routeName: req.body.taskName.replace(/\s+/g, "-").toLowerCase()
+    routeName: req.body.taskName.replace(/\s+/g, "-").toLowerCase(),
   });
-    newTask.save()
-  
+  newTask.save();
+
   console.log(newTask);
 
   res.json(newTask);
@@ -114,26 +113,23 @@ route.post("/api/tasks", function (req, res) {
 
 //to edit/update a task
 route.put("/api/tasks/:id", async function (req, res) {
-  const task = await Task.findById(req.params.id)
-  if (!task) return res.status(404).json({
+  const task = await Task.findById(req.params.id);
+  if (!task)
+    return res.status(404).json({
+      message: "task not found",
+    });
 
-    message: "task not found"
-  })
-
-  task.taskName = req.body.taskName
-  task.taskDescription = req.body.taskDescription
-  task.taskDeadline = req.body.taskDeadline
+  task.taskName = req.body.taskName;
+  task.taskDescription = req.body.taskDescription;
+  task.taskDeadline = req.body.taskDeadline;
 
   try {
-    await task.save()
-    return res.status(200).json(task)
+    await task.save();
+    return res.status(200).json(task);
   } catch (err) {
-    res.status(500).json(err)
+    res.status(500).json(err);
   }
-    }
-  
-  
-);
+});
 
 //To delete a task
 route.delete("/api/tasks/:slug", function (req, res) {
@@ -173,4 +169,4 @@ route.post("/users/login", async (req, res) => {
   }
 });
 
-module.exports = route
+module.exports = route;

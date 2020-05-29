@@ -1,4 +1,3 @@
-// Get the connection to the database
 const DB = require("../db");
 const connection = new DB({ database: "tasks_db" }).connection;
 
@@ -30,8 +29,11 @@ class Task {
 
   async delete() {
     if (this.id) {
-      let sql = "DELETE FROM tasks SET ? WHERE id = ?;";
-      const [result] = await connection.query(sql, function (err, result) {
+      let sql = "DELETE FROM tasks WHERE id = ?;";
+      const [result] = await connection.query(sql, [this.id], function (
+        err,
+        result
+      ) {
         if (err) throw err;
         console.log("Number of records deleted: " + result.affectedRows);
       });
