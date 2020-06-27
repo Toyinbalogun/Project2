@@ -4,6 +4,7 @@ const defaultConfig = {
   host: "localhost",
   user: "root",
   password: "Omolara24", //pick a password
+
 };
 
 class DB {
