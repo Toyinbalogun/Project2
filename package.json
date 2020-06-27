@@ -1,21 +1,24 @@
 {
-  "name": "Task-Manager",
-  "version": "1.0.0",
-  "description": "",
+  "name": "task_manager",
+  "version": "2.0.0",
+  "description": "Simplified taskmanager",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "4.0.1",
+
+
     "express": "^4.17.1",
     "express-handlebars": "^4.0.4",
     "mysql2": "^2.1.0",
-    "sequelize": "^6.2.0"
+    "bcrypt": "4.0.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.3"
+
   }
 }

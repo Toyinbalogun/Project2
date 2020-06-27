@@ -1,0 +1,296 @@
+<nav class="navbar is-fixed-bottom is-flex-mobile is-grouped" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="#">
+            <img src="https://i.imgur.com/MdLJmhE.png" alt="Task.it - Task management made easy" width="112"
+                height="28" />
+        </a>
+        <p class="navbar-item ">
+            <button id="btn-add" class="button is-primary" data-toggle="modal" data-target="#add-task-modal">
+                Add Task
+            </button>
+        </p>
+
+        <p class="navbar-item control">
+            <button id="btn-delete" class="button is-danger">
+                Delete Task
+            </button>
+        </p>
+    </div>
+</nav>
+
+
+
+
+<section class="section">
+    <div class="container">
+        <h1 class="title">
+            Task.it
+        </h1>
+        <p class="subtitle">Task management, made easy.</p>
+    </div>
+</section>
+<div class="container">
+    <div class="columns">
+        <div class="column" id="sidebar">
+            {{#each tasks}}
+            <div class="box">
+                <p>task name: {{this.taskName}} </p>
+                <p>task description: {{this.taskDescription}}</p>
+                <p>task deadline: {{this.taskDeadline}}</p>
+                <button id={{this.id}} class="btn-edit" data-toggle="modal" data-target="#edit-task-modal">Edit
+                    task</button>
+            </div>
+            {{/each}}
+        </div>
+        {{!-- <div class="column" id="content">
+            <div class="box"></div>
+        </div> --}}
+    </div>
+</div>
+{{!-- modal window for the form used to add task --}}
+<div class="modal" id="add-task-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h1>Add a Task</h1>
+            <hr>
+
+            {{!-- Form for adding a task --}}
+            <form action="" id="add-task-form">
+                <div class="field">
+                    <label class="label" for="taskName">Task Name</label>
+                    <div class="control">
+                        <input name="taskName" id="taskName" class="input" type="text"
+                            placeholder="Enter a name for this task">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="taskDescription">Task Description</label>
+                    <div class="control">
+                        <textarea id="taskDescription" name="taskDescription" class="textarea"
+                            placeholder="Enter what the task is about"></textarea>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="taskDeadline">Task Deadline</label>
+                    <div class="control">
+                        <input name="taskDeadline" id="taskDeadline" class="input" type="text"
+                            placeholder="When should this task expire">
+                    </div>
+                </div>
+
+                <div class="control">
+                    <button class="button is-primary" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+</div>
+
+{{!-- modal window for the form used to edit task --}}
+<div class="modal" id="edit-task-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h1>Edit Task</h1>
+            <hr>
+
+            {{!-- Form for editing a task --}}
+            <form action="" id="edit-task-form">
+                <input type="hidden" name="editTaskId" id="editTaskId" >
+                <div class="field">
+                    <label class="label" for="edittaskName">Task Name</label>
+                    <div class="control">
+                        <input name="edittaskName" id="edittaskName" class="input" type="text"
+                            placeholder="Enter a name for this task">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="edittaskDescription">Task Description</label>
+                    <div class="control">
+                        <textarea id="edittaskDescription" name="edittaskDescription" class="textarea"
+                            placeholder="Enter what the task is about"></textarea>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="edittaskDeadline">Task Deadline</label>
+                    <div class="control">
+                        <input name="edittaskDeadline" id="edittaskDeadline" class="input" type="text"
+                            placeholder="When should this task expire">
+                    </div>
+                </div>
+
+                <div class="control">
+                    <button class="button is-primary" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+</div> 
+<!-- Delete Modal -->
+
+<div class="modal" id="delete-task-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h1>Delete a Task</h1>
+            <hr>
+
+            {{!-- Form for adding a task --}}
+            <form action="" id="delete-task-form">
+                {{#each tasks}}
+                <div class="box">
+                    <p>Task Name: {{this.taskName}} </p>
+                    <p>Task Description: {{this.taskDescription}}</p>
+                    <p>Task Deadline: {{this.taskDeadline}}</p>
+                </div>
+                <button class="button is-danger" type="submit">Delete</button>
+                {{/each}}
+
+                <div class="control">
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        //event handler to open modal windows
+        document.querySelectorAll("[data-toggle='modal'").forEach(element => {
+            element.addEventListener("click", event => {
+                document.documentElement.classList.add("is-clipped")
+                document.querySelector(element.getAttribute("data-target")).classList.add("is-active")
+
+            })
+        })
+
+        //event handler to close the modal
+        document.querySelectorAll('.modal-close').forEach(element => {
+            element.addEventListener("click", event => {
+                document.getElementById("add-task-modal").classList.remove("is-active")
+                document.documentElement.classList.remove("is-clipped")
+            })
+
+        })
+
+        // Delete
+
+        document.getElementById("btn-delete").addEventListener("click", event => {
+            document.documentElement.classList.add("is-clipped")
+            document.getElementById("delete-task-modal").classList.add("is-active")
+        })
+
+        document.querySelectorAll('.modal-close').forEach(element => {
+            element.addEventListener("click", event => {
+                document.getElementById("delete-task-modal").classList.remove("is-active")
+                document.documentElement.classList.remove("is-clipped")
+            })
+
+        })
+
+
+
+
+        // Delete Tasks Handler
+        document.getElementById("delete-task-form").addEventListener("submit", event => {
+            event.preventDefault();
+
+            const deleteTask = {
+                taskName: document.querySelector("[name=taskName]").value.trim(),
+                taskDescription: document.querySelector("[name=taskDescription]").value.trim(),
+                taskDeadline: document.querySelector("[name=taskDeadline]").value.trim(),
+            }
+            fetch(`/api/tasks`, {
+                method: 'DELETE',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(deleteTask)
+            }).then(response => {
+                console.log(response)
+                location.reload()
+            })
+            location.reload()
+        })
+
+        // Event handler for submitting the add task form
+        document.getElementById("add-task-form").addEventListener("submit", event => {
+            event.preventDefault();
+
+            const newTask = {
+                taskName: document.querySelector("[name=taskName]").value.trim(),
+                taskDescription: document.querySelector("[name=taskDescription]").value.trim(),
+                taskDeadline: document.querySelector("[name=taskDeadline]").value.trim(),
+            }
+
+            fetch(`/api/tasks`, {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newTask)
+            }).then(response => {
+                console.log(response)
+                location.reload()
+            })
+        })
+
+
+
+        document.querySelectorAll('.modal-close').forEach(element => {
+            element.addEventListener("click", event => {
+                document.getElementById("edit-task-modal").classList.remove("is-active")
+                document.documentElement.classList.remove("is-clipped")
+            })
+
+        })
+
+        //event handler to edit the modal
+        document.querySelectorAll(".btn-edit").forEach(element => {
+            element.addEventListener("click", event => {
+                const taskId = element.getAttribute("id")
+                console.log(taskId)
+                fetch(`/api/tasks/${taskId}`, {
+                    method: 'GET',
+                    headers: { "Content-Type": "application/json" },
+                }).then((response) => {
+                    response.json().then((data) => {
+                        document.getElementById("editTaskId").value = data.id
+                        document.getElementById("edittaskName").value = data.taskName
+                        document.getElementById("edittaskDescription").value = data.taskDescription
+                        document.getElementById("edittaskDeadline").value = data.taskDeadline
+                    });
+                });
+            })
+        })
+
+        // Event handler for submitting the add task form
+        document.getElementById("edit-task-form").addEventListener("submit", event => {
+            event.preventDefault();
+
+            const newTask = {
+                taskName: document.getElementById("edittaskName").value.trim(),
+                taskDescription: document.getElementById("edittaskDescription").value.trim(),
+                taskDeadline: document.getElementById("edittaskDeadline").value.trim(),
+            }
+
+            console.log(document.getElementById("editTaskId").value)
+
+           fetch(`/api/tasks/${document.getElementById("editTaskId").value}`, {
+                method: 'PUT',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newTask)
+            }).then(response => {
+                console.log(response)
+                location.reload()
+            })
+        })
+
+
+    })
+</script>
