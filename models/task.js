@@ -28,14 +28,15 @@ class Task {
     return task;
   }
 
-  async delete() {
-    if (this.id) {
-      let sql = "DELETE FROM tasks SET ? WHERE id = ?;";
-      const [result] = await connection.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("Number of records deleted: " + result.affectedRows);
-      });
+  static async delete(id) {
+    if (id) {
+      const [result] = await connection.query(`DELETE FROM tasks WHERE id = ?;`,[parseInt(id)]);
+      console.log(result)
+      if(result.affectedRows > 0){
+        return true
+      }
     }
+    return false;
   }
 
   async save() {
@@ -58,7 +59,7 @@ class Task {
     return this;
   }
 
-  async update() {
+  async update(id) {
     const sql = `UPDATE tasks SET ? WHERE id = ?`;
     await connection.query(sql, [
       {
